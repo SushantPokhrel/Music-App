@@ -2,6 +2,9 @@ let currentCategory = ""; // Track the current category being displayed
 const songUrlsMap = {}; // Store song URLs for each category
 let currentAudio = null; // Track the current playing audio instance
 
+// New base URL
+const baseUrl = 'https://sushantpokhrel.github.io/Music-App'; 
+
 function fetchSongs(category) {
   const songsContainer = document.querySelector(".songs-container");
 
@@ -14,7 +17,7 @@ function fetchSongs(category) {
   songsContainer.innerHTML = "";
   currentCategory = category;
 
-  fetch(`http://127.0.0.1:5500/songs/${category}`)
+  fetch(`${baseUrl}/songs/${category}`)
     .then((response) => response.text())
     .then((data) => {
       console.log(data);
@@ -32,13 +35,13 @@ function fetchSongs(category) {
           songsContainer.innerHTML += `
             <div class="song" data-url="${lis[i].href}">
               <img
-                src="https://spotify.freewebhostmost.com/img/music.svg"
+                src="${baseUrl}/img/music.svg"
                 alt="Music Icon"
               />
               <span class="song-title">${lis[i].title}</span>
               <strong>Play Now</strong>
               <img
-                src="https://spotify.freewebhostmost.com/img/play.svg"
+                src="${baseUrl}/img/play.svg"
                 alt="Play Icon"
               />
             </div>`;
@@ -89,19 +92,20 @@ function playAudio(url) {
 
   // Update play status
   currentAudio.onended = () => {
-    // reset the current audio  to null
+    // reset the current audio to null
     currentAudio = null;
   };
 }
+
 function modifyTime(song) {
   document
     .querySelector(".play-barIcon-container")
     .addEventListener("click", () => {
       if (song.paused) {
         song.play();
-        
+      } else {
+        song.pause();
       }
-     else  song.pause();
     });
   document
     .querySelector(".pre-icon-container")
