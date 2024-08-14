@@ -29,7 +29,7 @@ function fetchSongs(category) {
         if (lis[i].href.endsWith(".mp3")) {
           songUrlsMap[category].push(lis[i].href); // Store song URL
 
-          songsContainer.innerHTML += `
+          songsContainer.innerHTML += (
             <div class="song" data-url="${lis[i].href}">
               <img
                 src="https://spotify.freewebhostmost.com/img/music.svg"
@@ -41,7 +41,8 @@ function fetchSongs(category) {
                 src="https://spotify.freewebhostmost.com/img/play.svg"
                 alt="Play Icon"
               />
-            </div>`;
+            </div>
+          );
         }
       }
       songsContainer.style.display = "flex";
