@@ -14,7 +14,7 @@ function fetchSongs(category) {
   songsContainer.innerHTML = "";
   currentCategory = category;
 
-  fetch(`http://127.0.0.1:5500/songs/${category}`)
+  fetch(` https://sushantpokhrel.github.io/Music-App/songs/${category}`)
     .then((response) => response.text())
     .then((data) => {
       console.log(data);
