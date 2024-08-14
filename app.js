@@ -13,7 +13,7 @@ function fetchSongs(category) {
   // Clear the container if a new category is selected
   songsContainer.innerHTML = "";
   currentCategory = category;
-  fetch(`https://github.com/SushantPokhrel/Music-App/songs/${category}`, { mode: 'no-cors' })
+  fetch(`/songs/${category}`, { mode: 'no-cors' })
     .then((response) => response.text())
     .then((data) => {
       console.log(data);
