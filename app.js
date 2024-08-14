@@ -85,32 +85,40 @@ function playAudio(url) {
   currentAudio.onloadedmetadata = () => {
     console.log(currentAudio.duration); //due to browser not loading tracks
   };
+
+  // Synchronize the modifyTime function with the current audio
   modifyTime(currentAudio);
 
   // Update play status
   currentAudio.onended = () => {
-    // reset the current audio  to null
+    // Reset the current audio to null when the song ends
     currentAudio = null;
   };
 }
-function modifyTime(song) {
-  document
-    .querySelector(".play-barIcon-container")
-    .addEventListener("click", () => {
-      if (song.paused) {
-        song.play();
-        
-      }
-     else  song.pause();
-    });
-  document
-    .querySelector(".pre-icon-container")
-    .addEventListener("click", () => {
-      song.currentTime -= 10;
-    });
-  document
-    .querySelector(".post-icon-container")
-    .addEventListener("click", () => {
-      song.currentTime += 10;
-    });
+function modifyTime(audio) {
+  const playBar = document.querySelector(".play-barIcon-container");
+  const preIcon = document.querySelector(".pre-icon-container");
+  const postIcon = document.querySelector(".post-icon-container");
+
+  // Clear previous inline event listeners
+  // playBar.onclick = null;
+  // preIcon.onclick = null;
+  // postIcon.onclick = null;
+
+  // Assign new event listeners directly
+  playBar.onclick = () => {
+    if (audio.paused) {
+      audio.play();
+    } else {
+      audio.pause();
+    }
+  };
+
+  preIcon.onclick = () => {
+    audio.currentTime -= 10;
+  };
+
+  postIcon.onclick = () => {
+    audio.currentTime += 10;
+  };
 }
