@@ -13,7 +13,7 @@ function fetchSongs(category) {
   // Clear the container if a new category is selected
   songsContainer.innerHTML = "";
   currentCategory = category;
-  fetch(`/songs/${category}`)
+  fetch(`/${category}/`)
     .then((response) => response.text())
     .then((data) => {
       console.log(data);
