@@ -2,6 +2,54 @@ let currentCategory = ""; // Track the current category being displayed
 const songUrlsMap = {}; // Store song URLs for each category
 let currentAudio = null; // Track the current playing audio instance
 
+let songs = {
+  "english-songs": [
+    {
+      url: "songs/english-songs/Arctic Monkeys - I Wanna Be Yours.mp3",
+      title: "Arctic Monkeys - I Wanna Be Yours",
+    },
+    {
+      url: "songs/english-songs/Ed Sheeran - Shape of You (Official Music Video).mp3",
+      title: "Ed Sheeran - Shape of You (Official Music Video)",
+    },
+    {
+      url: "songs/english-songs/Ruth B. - Dandelions (Lyrics).mp3",
+      title: "Ruth B. - Dandelions (Lyrics)",
+    },
+    {
+      url: "songs/english-songs/Luis Fonsi - Despacito ft. Daddy Yankee.mp3",
+      title: "Luis Fonsi - Despacito ft. Daddy Yankee",
+    },
+  ],
+  "nepali-songs": [
+    {
+      url: "songs/nepali-songs/KUTU MA KUTU (Movie Song) Rajanraj Shiwakoti _ DUI RUPAIYAN _ Asif Shah, Nischal, Swastima, Buddhi.mp3",
+      title:
+        "KUTU MA KUTU (Movie Song) Rajanraj Shiwakoti _ DUI RUPAIYAN _ Asif Shah, Nischal, Swastima, Buddhi",
+    },
+    {
+      url: "songs/nepali-songs/Nepathya - Resham (रेशम).mp3",
+      title: "Nepathya - Resham (रेशम)",
+    },
+    {
+      url: "songs/nepali-songs/Resham firiri famous Nepali song.mp3",
+      title: "Resham firiri famous Nepali song",
+    },
+  ],
+  "hindi-songs": [
+    {
+      url: "songs/hindi-songs/JAWAN_ Chaleya (Hindi) _ Shah Rukh Khan _ Nayanthara _ Atlee _ Anirudh _ Arijit S, Shilpa R _ Kumaar.mp3",
+      title:
+        "JAWAN_ Chaleya (Hindi) _ Shah Rukh Khan _ Nayanthara _ Atlee _ Anirudh _ Arijit S, Shilpa R _ Kumaar",
+    },
+    {
+      url: "songs/hindi-songs/Ve Kamleya Mere Nadan Dil (LYRICS) Arijit Singh & Shreya Ghoshal _ Ranveer, Alia _ Pritam.mp3",
+      title:
+        "Ve Kamleya Mere Nadan Dil (LYRICS) Arijit Singh & Shreya Ghoshal _ Ranveer, Alia _ Pritam",
+    },
+  ],
+};
+
 function fetchSongs(category) {
   const songsContainer = document.querySelector(".songs-container");
 
@@ -13,57 +61,47 @@ function fetchSongs(category) {
   // Clear the container if a new category is selected
   songsContainer.innerHTML = "";
   currentCategory = category;
-  fetch(`/${category}/`)
-    .then((response) => response.text())
-    .then((data) => {
-      console.log(data);
-      const div = document.createElement("div");
-      div.innerHTML = data;
-      const lis = div.getElementsByTagName("a");
 
-      // Initialize or clear the song URLs map for the category
-      songUrlsMap[category] = [];
+  // Initialize or clear the song URLs map for the category
+  songUrlsMap[category] = [];
 
-      for (let i = 0; i < lis.length; i++) {
-        if (lis[i].href.endsWith(".mp3")) {
-          songUrlsMap[category].push(lis[i].href); // Store song URL
-
-         songsContainer.innerHTML += `
-            <div class="song" data-url="${lis[i].href}">
-              <img
-                src="https://spotify.freewebhostmost.com/img/music.svg"
-                alt="Music Icon"
-              />
-              <span class="song-title">${lis[i].title}</span>
-              <strong>Play Now</strong>
-              <img
-                src="https://spotify.freewebhostmost.com/img/play.svg"
-                alt="Play Icon"
-              />
-            </div>
-          `;
-        }
-      }
-      songsContainer.style.display = "flex";
-
-      // Add event listener to newly created song elements
-      document.querySelectorAll(".song").forEach((item) => {
-        item.addEventListener("click", () => {
-          const songUrl = item.getAttribute("data-url");
-          console.log("Playing song:", songUrl);
-          playAudio(songUrl);
-        });
+  for (let i in songs) {
+    if (i === category) {
+      songs[i].forEach((item) => {
+        songsContainer.innerHTML += `
+          <div class="song" data-url="${item.url}">
+            <img
+              src="https://spotify.freewebhostmost.com/img/music.svg"
+              alt="Music Icon"
+            />
+            <span class="song-title">${item.title}</span>
+            <strong>Play Now</strong>
+            <img
+              src="https://spotify.freewebhostmost.com/img/play.svg"
+              alt="Play Icon"
+            />
+          </div>
+        `;
       });
-    })
-    .catch((error) => {
-      console.error("There was a problem with the fetch operation:", error);
+    }
+  }
+  songsContainer.style.display = "flex";
+
+  // Add event listeners to the newly created song elements
+  document.querySelectorAll(".song").forEach((item) => {
+    item.addEventListener("click", () => {
+      const songUrl = item.getAttribute("data-url");
+      console.log("Playing song:", songUrl);
+      playAudio(songUrl);
     });
+  });
+
 }
 
 const cards = document.querySelectorAll(".card");
 cards.forEach((card, index) => {
+  const categories = ["hindi-songs", "english-songs", "nepali-songs"]; // for category index
   card.addEventListener("click", () => {
-    const categories = ["hindi-songs", "english-songs", "nepali-songs"]; // for category index
     fetchSongs(categories[index]);
   });
 });
@@ -83,7 +121,7 @@ function playAudio(url) {
   currentAudio = new Audio(url);
   currentAudio.play();
   currentAudio.onloadedmetadata = () => {
-    console.log(currentAudio.duration); //due to browser not loading tracks
+    console.log("Duration:", currentAudio.duration);
   };
 
   // Synchronize the modifyTime function with the current audio
@@ -96,21 +134,18 @@ function playAudio(url) {
   };
 }
 function modifyTime(audio) {
-  const playBar = document.querySelector(".play-barIcon-container");
+  const playBar = document.querySelector(".play-barIcon-container img");
   const preIcon = document.querySelector(".pre-icon-container");
   const postIcon = document.querySelector(".post-icon-container");
-
-  // Clear previous inline event listeners
-  // playBar.onclick = null;
-  // preIcon.onclick = null;
-  // postIcon.onclick = null;
 
   // Assign new event listeners directly
   playBar.onclick = () => {
     if (audio.paused) {
       audio.play();
+      playBar.src = "https://spotify.freewebhostmost.com/img/pause.svg"; // Change to pause icon when playing
     } else {
       audio.pause();
+      playBar.src = "icons/play-btn.svg"; // Change to play icon when paused
     }
   };
 
@@ -120,5 +155,10 @@ function modifyTime(audio) {
 
   postIcon.onclick = () => {
     audio.currentTime += 10;
+  };
+
+  // Update the playBar icon when the audio ends
+  audio.onended = () => {
+    playBar.src = "icons/play-btn.svg"; // Reset to play icon when audio ends
   };
 }
