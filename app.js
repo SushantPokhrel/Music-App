@@ -106,6 +106,7 @@ cards.forEach((card, index) => {
   const categories = ["hindi-songs", "english-songs", "nepali-songs"]; // for category index
   card.addEventListener("click", () => {
     fetchSongs(categories[index]);
+    toggleNav()
   });
 });
 
