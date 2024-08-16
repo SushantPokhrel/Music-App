@@ -295,10 +295,10 @@
 .songs-container .song .song-title {
   max-width: 50%;
 }
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   background-color: #2c2b2b;
   width: 10px;
-}
+} */
 .cross{
   display: none;
 }
@@ -312,7 +312,9 @@
   }
 }
 @media (min-width:320px) and (max-width:890px){
-  
+  body::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+}
   .songs-container .song .song-title {
     font-size: 14px;
     }
@@ -351,5 +353,13 @@
 }
 .play-bar{
   padding: 15px;
+  position: fixed;
+  bottom: 1%;
+}
+.nav-bar{
+  padding: 8px !important; 
+}
+.right-h2{
+  font-size: 28px;
 }
 }
