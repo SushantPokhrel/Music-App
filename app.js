@@ -2,7 +2,7 @@ let currentCategory = ""; // Track the current category being displayed
 const songUrlsMap = {}; // Store song URLs for each category
 let currentAudio = null; // Track the current playing audio instance
 const playBar = document.querySelector(".play-barIcon-container img");
-
+const playPauseToolTip = document.querySelector(".play-barIcon-container")
 let songs = {
   "english-songs": [
     {
@@ -95,6 +95,7 @@ function fetchSongs(category) {
       console.log("Playing song:", songUrl);
       playAudio(songUrl);
      playBar.src = "https://spotify.freewebhostmost.com/img/pause.svg";
+   
     });
   });
 
@@ -162,4 +163,15 @@ function modifyTime(audio) {
   audio.onended = () => {
     playBar.src = "icons/play-btn.svg"; // Reset to play icon when audio ends
   };
+}
+document.querySelector(".hamburger").addEventListener("click",toggleNav)
+
+function toggleNav(){
+ const sideBar =  document.querySelector(".left");
+if(!sideBar.classList.contains("side-bar")){
+  sideBar.classList.add("side-bar");
+
+}
+else sideBar.classList.remove("side-bar")
+
 }
