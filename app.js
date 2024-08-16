@@ -1,6 +1,7 @@
 let currentCategory = ""; // Track the current category being displayed
 const songUrlsMap = {}; // Store song URLs for each category
 let currentAudio = null; // Track the current playing audio instance
+const playBar = document.querySelector(".play-barIcon-container img");
 
 let songs = {
   "english-songs": [
@@ -93,6 +94,7 @@ function fetchSongs(category) {
       const songUrl = item.getAttribute("data-url");
       console.log("Playing song:", songUrl);
       playAudio(songUrl);
+     playBar.src = "https://spotify.freewebhostmost.com/img/pause.svg";
     });
   });
 
@@ -134,7 +136,6 @@ function playAudio(url) {
   };
 }
 function modifyTime(audio) {
-  const playBar = document.querySelector(".play-barIcon-container img");
   const preIcon = document.querySelector(".pre-icon-container");
   const postIcon = document.querySelector(".post-icon-container");
 
