@@ -2,7 +2,9 @@ let currentCategory = ""; // Track the current category being displayed
 const songUrlsMap = {}; // Store song URLs for each category
 let currentAudio = null; // Track the current playing audio instance
 const playBar = document.querySelector(".play-barIcon-container img");
-const playPauseToolTip = document.querySelector(".play-barIcon-container")
+const playPauseToolTip = document.querySelector(".play-barIcon-container");
+const songsContainer = document.querySelector(".songs-container");
+
 let songs = {
   "english-songs": [
     {
@@ -52,8 +54,6 @@ let songs = {
 };
 
 function fetchSongs(category) {
-  const songsContainer = document.querySelector(".songs-container");
-
   // If the same category is clicked, don't re-fetch or re-render
   if (currentCategory === category) {
     return;
@@ -94,11 +94,9 @@ function fetchSongs(category) {
       const songUrl = item.getAttribute("data-url");
       console.log("Playing song:", songUrl);
       playAudio(songUrl);
-     playBar.src = "https://spotify.freewebhostmost.com/img/pause.svg";
-   
+      playBar.src = "https://spotify.freewebhostmost.com/img/pause.svg";
     });
   });
-
 }
 
 const cards = document.querySelectorAll(".card");
@@ -106,7 +104,7 @@ cards.forEach((card, index) => {
   const categories = ["hindi-songs", "english-songs", "nepali-songs"]; // for category index
   card.addEventListener("click", () => {
     fetchSongs(categories[index]);
-    toggleNav()
+    toggleNav();
   });
 });
 
@@ -165,14 +163,74 @@ function modifyTime(audio) {
     playBar.src = "icons/play-btn.svg"; // Reset to play icon when audio ends
   };
 }
-document.querySelector(".hamburger").addEventListener("click",toggleNav)
+document.querySelector(".hamburger").addEventListener("click", toggleNav);
 
-function toggleNav(){
- const sideBar =  document.querySelector(".left");
-if(!sideBar.classList.contains("side-bar")){
-  sideBar.classList.add("side-bar");
-
+function toggleNav() {
+  const sideBar = document.querySelector(".left");
+  if (!sideBar.classList.contains("side-bar")) {
+    sideBar.classList.add("side-bar");
+  } else sideBar.classList.remove("side-bar");
 }
-else sideBar.classList.remove("side-bar")
 
+//search filter
+const searchBtn = document.querySelector(".find-song");
+searchBtn.addEventListener("click", filterSongs);
+//filter function
+function filterSongs() {
+  let input = document
+    .querySelector(".search-input")
+    .value.toLowerCase()
+    .trim(); // Get the search input and trim any whitespace
+
+  // Clear the container before displaying new search results
+  songsContainer.innerHTML = "";
+
+  let foundSongs = false; // Track if any songs are found
+
+  for (let i in songs) {
+    songs[i].forEach((item) => {
+      if (input === "") {
+        songsContainer.innerHTML = `Please enter a search term.`;
+        songsContainer.style.color = "#fff";
+        return;
+      }
+
+      if (item.title.toLowerCase().includes(input)) {
+        foundSongs = true; // Mark that we found at least one song
+
+        songsContainer.innerHTML += `
+          <div class="song" data-url="${item.url}">
+            <img
+              src="https://spotify.freewebhostmost.com/img/music.svg"
+              alt="Music Icon"
+            />
+            <span class="song-title">${item.title}</span>
+            <strong>Play Now</strong>
+            <img
+              src="https://spotify.freewebhostmost.com/img/play.svg"
+              alt="Play Icon"
+            />
+          </div>
+        `;
+      }
+    });
+  }
+
+  if (foundSongs) {
+    songsContainer.style.display = "flex";
+  } else {
+    songsContainer.innerHTML = `No results found :(`;
+    songsContainer.style.color = "#fff";
+  }
+
+  // Add event listeners to the newly created song elements
+  document.querySelectorAll(".song").forEach((item) => {
+    item.addEventListener("click", () => {
+      const songUrl = item.getAttribute("data-url");
+      console.log("Playing song:", songUrl);
+      playAudio(songUrl);
+      playBar.src = "https://spotify.freewebhostmost.com/img/pause.svg";
+    });
+  });
+  document.querySelector(".search-input").value = "";
 }
