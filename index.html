@@ -13,7 +13,7 @@
           <div class="left-upper-section">
             <ul>
               <li class="cross-li">
-                <a href="#" class="flex-left-icon"
+                <a href="index.html" class="flex-left-icon"
                   ><img src="icons/home.svg" alt="home" /><span class="home"
                     >Home</span
                   ></a
@@ -21,13 +21,15 @@
                 <a href="#" class="cross" onclick="toggleNav()">X</a>
               </li>
               <li>
-                <a href="#" class="flex-left-icon"
+                <a href="#" class="flex-left-icon search-btn"
                   ><img
                     src="icons/search.svg"
                     alt="search"
                     style="opacity: 0.8"
-                  /><span class="search">Search</span></a
-                >
+                    class="find-song"
+                    
+                  /><input class="search-input" type="search" placeholder="Search"/></a>
+                
               </li>
             </ul>
           </div>
@@ -47,20 +49,19 @@
                   /></button></span
             ></a>
             <div class="songs-container"></div>
-           
           </div>
         </div>
         <div class="right">
           <nav class="nav-bar">
             <div class="hamburger"><span class="ham-icon">&#8801;</span></div>
             <div>
-              <button class="right-arr-btn">
+              <button class="right-arr-btn r-lf" title="view by PlayLists">
                 <img
                   src="icons/arr-left.svg"
                   alt=""
                   class="right-arr"
                 /></button
-              ><button class="right-arr-btn">
+              ><button class="right-arr-btn r-rf" title="all songs">
                 <img src="icons/arr-right.svg" alt="" class="right-arr" />
               </button>
             </div>
