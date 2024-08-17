@@ -122,10 +122,24 @@ function playAudio(url) {
   // Create a new audio instance and play it
   currentAudio = new Audio(url);
   currentAudio.play();
-  currentAudio.onloadedmetadata = () => {
+  // currentAudio.onloadedmetadata = () => {
+  // };
+  currentAudio.ontimeupdate = () => {
+    console.log("Current time :", currentAudio.currentTime);
     console.log("Duration:", currentAudio.duration);
-  };
+    function formatTime(seconds) {
+      const minutes = Math.floor(seconds / 60);
+      console.log(minutes);
+      const secs = Math.floor(seconds % 60);
+      console.log(secs);
 
+      return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
+    }
+
+    const formattedTime = formatTime(currentAudio.currentTime);
+    console.log(`Current time: ${formattedTime}`);
+    document.querySelector(".time-update").innerHTML = `${formattedTime}`;
+  };
   // Synchronize the modifyTime function with the current audio
   modifyTime(currentAudio);
 
