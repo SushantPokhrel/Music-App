@@ -1,2 +1,2 @@
-This is entirely made upon vanilla JavaScript/HTML AND CSS.
-The songs are limited sadly :)
+This is  made in vanilla JavaScript/HTML AND CSS.
+The songs are limited for now :)
